@@ -74,10 +74,10 @@ void kawpow_prepare(nvid_ctx *ctx, const void* cache, size_t cache_size, const v
 
         uint4 light_words;
         light_words.w = ctx->kawpow_cache_size / sizeof(hash64_t);
-        calculate_fast_mod_data(light_words.w, light_words.x, light_words.y, light_words.z);
+        KawPow_calculate_fast_mod_data(light_words.w, light_words.x, light_words.y, light_words.z);
 
         for (size_t i = dag_precalc ? cache_items : 0; i < dag_items; i += blocks * threads) {
-            CUDA_CHECK_KERNEL(ctx->device_id, ethash_calculate_dag_item<<<blocks, threads>>>(
+            CUDA_CHECK_KERNEL(ctx->device_id, kawpow_calculate_dag_item<<<blocks, threads>>>(
                 i,
                 (hash64_t*) ctx->kawpow_dag,
                 ctx->kawpow_dag_size,
